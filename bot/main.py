@@ -1,7 +1,7 @@
 from settings import BotSettings
+from aiogram.utils import executor
+from loader import dp
+from handlers import *
 
-
-settings = BotSettings()
-
-
-print(settings.messages)
+if __name__ == "__main__":
+    executor.start_polling(dp)
