@@ -1,5 +1,6 @@
 {
-    "welcome" : "Welcome, traveller! I am book tracking bot, with my help you can keep track of the books you read or plan to read! To continue choose what you'd like to do and press the right button!",
+    "welcome" : "👋 Welcome, traveller! To continue choose what you'd like to do and press the right button!",
+    "about" : "ℹ️ <b>[About]\n</b> I am book tracking bot, with my help you can keep track of the books you jhave read or plan to read!",
     "add" : "What exactly do you want to add? Send me the name of the book and I'll add it to the collections.",
     "delete" : "What is the book you'd like to delete? Send me the name of it and I'll serve my purpose!",
     "off" : "See you later! I'll look out for your book list, do not worry about it!"

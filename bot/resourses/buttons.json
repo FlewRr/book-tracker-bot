@@ -1,0 +1,7 @@
+{
+    "add" : "add",
+    "delete" : "delete",
+    "read_list" : "get read list",
+    "planned_list" : "planned list",
+    "back" : "🔙 Back to main menu"
+}

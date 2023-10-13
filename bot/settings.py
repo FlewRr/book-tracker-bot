@@ -8,6 +8,7 @@ class BotConfig(BaseModel):
 
 class Messages(BaseModel):
     welcome : str
+    about : str
     add : str
     delete : str
     off : str
