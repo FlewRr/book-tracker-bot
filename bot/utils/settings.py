@@ -11,13 +11,13 @@ class Messages(BaseModel):
     about : str
     help : str
     add : str
-    delete : str
+    remove : str
     off : str
 
 
 class Buttons(BaseModel):
     add : str
-    delete : str
+    remove : str
     read : str
     planned : str
     back : str

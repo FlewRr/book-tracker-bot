@@ -1,6 +1,6 @@
 {
     "add" : "add",
-    "delete" : "delete",
+    "remove" : "remove",
     "read" : "read",
     "planned" : "planned",
     "back" : "🔙 Back"
