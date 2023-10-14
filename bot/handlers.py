@@ -30,16 +30,24 @@ async def help(message: types.Message, state: FSMContext):
 async def start(message: types.Message, state):
     if message.text == settings.buttons.add or message.text == 'Try again :)':
         await States.add_choose.set()
-        await message.answer("Where would you like to be your book added in? Read or planned?",  reply_markup=add_remove_keyboard)
+        await message.answer("Where would you like your book to be added in? Read or planned?",  reply_markup=add_remove_keyboard)
     elif message.text == settings.buttons.remove or message.text == 'Try again ;)':
         await States.remove_choose.set()
-        await message.answer("Where would you like to be your book added in? Read or planned?",  reply_markup=add_remove_keyboard)
+        await message.answer("Where should I delete the book from? From read or planned?",  reply_markup=add_remove_keyboard)
     elif message.text == settings.buttons.read:
-        await message.answer(' '.join(read_books))
-        await welcome(message, state) 
+        if len(read_books) == 0:
+            await message.answer("There is none books in your list. Add them and come back later :)")
+            await welcome(message, state)
+        else:
+            await message.answer(' '.join(read_books))
+            await welcome(message, state) 
     elif message.text == settings.buttons.planned:
-        await message.answer(' '.join(planned_books))
-        await welcome(message, state) 
+        if len(planned_books) == 0:
+            await message.answer("There is none books in your list. Add them and come back later :)")
+            await welcome(message, state)
+        else:
+            await message.answer(' '.join(planned_books))
+            await welcome(message, state) 
     elif message.text == settings.buttons.back:
         return 0
     
@@ -52,9 +60,12 @@ async def remove_choose(message: types.Message, state: FSMContext):
     elif message.text == 'planned':
         await States.remove_planned.set()
         await message.answer(settings.messages.remove)
+    elif message.text == settings.buttons.back:
+        await welcome(message, state)
     else:
         await message.answer("I don't get it. Try again.")
         await welcome(message, state)
+
 
 @dp.message_handler(state=States.add_choose)
 async def add_choose(message: types.Message, state: FSMContext):
@@ -64,6 +75,8 @@ async def add_choose(message: types.Message, state: FSMContext):
     elif message.text == 'planned':
         await States.add_planned.set()
         await message.answer(settings.messages.add)
+    elif message.text == settings.buttons.back:
+        await welcome(message, state)
     else:
         await message.answer("I don't get it. Try again.")
         await welcome(message, state)
@@ -80,6 +93,7 @@ async def add_book_to_read(message: types.Message, state: FSMContext):
         await message.answer("The book has been added to read books.")
         await welcome(message, state)
         print(read_books)
+
 
 @dp.message_handler(state=States.add_planned)
 async def add_book_to_planned(message: types.Message, state: FSMContext):
