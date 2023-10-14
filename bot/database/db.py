@@ -77,22 +77,3 @@ def database_remove(database: Session, user_id : int, book : str, read : bool) -
         books.remove(book)
         database_update(database, user_id, ';'.join(books), read)
         return True 
-
-# Base.metadata.create_all(bind=engine)
-
-# with Session(autoflush=False, bind=engine) as db:
-    # database_insert(db, 123, 'Hello', True)
-    # database_insert(db, 123, 'DSAMKFASK', False)
-    # database_insert(db, 123, 'Bye', True)
-    # database_insert(db, 123, 'DSAMKFASdsadK', False)
-    # database_insert(db, 123, 'DSAMKFsadssASK', False)
-    # database_insert(db, 123, 'Byeasdsa', True)
-
-    # database_remove(db, 123, 'DSAMKFASdsadK', False)
-    # database_remove(db, 123, 'Hello', True)
-    # database_remove(db, 123, 'DSAMKFsadssASK', False)
-    # database_remove(db, 123, 'Byeasdsa', True)
-    # print(database_get_by_id(db, 123, True))
-    # print(database_get_by_id(db, 123, False))
-    # # print(database_get_by_id(db, User, 213445))
-    # # print(db.query(User).filter(User.books=='Hello World!').first())
