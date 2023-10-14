@@ -2,11 +2,6 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Session
 from sqlalchemy import  Column, Integer, String
 from typing import List
-from sqlalchemy import create_engine
-
-
-engine = create_engine('sqlite:///database.db', echo=True)
-
 
 class Base(DeclarativeBase):
     pass
@@ -83,7 +78,7 @@ def database_remove(database: Session, user_id : int, book : str, read : bool) -
         database_update(database, user_id, ';'.join(books), read)
         return True 
 
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 # with Session(autoflush=False, bind=engine) as db:
     # database_insert(db, 123, 'Hello', True)

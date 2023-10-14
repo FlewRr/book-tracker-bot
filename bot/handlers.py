@@ -33,7 +33,7 @@ async def start(message: types.Message, state):
         await message.answer("Where should I delete the book from? From read or planned?",  reply_markup=add_remove_keyboard)
     elif message.text == settings.buttons.read:
         read_books = database_get_by_id(database=db, user_id=message.from_user.id, read=True)
-        if read_books == None or read_books=='' or len(read_books) == 1:
+        if read_books == None or len(read_books) == 1 and read_books[0] == '':
             await message.answer("There is none books in your read list. Add them and come back later :)")
             await welcome(message, state)
         else:
@@ -41,7 +41,7 @@ async def start(message: types.Message, state):
             await welcome(message, state) 
     elif message.text == settings.buttons.planned:
         planned_books = database_get_by_id(database=db, user_id=message.from_user.id, read=False)
-        if planned_books == None or len(planned_books)==1:
+        if planned_books == None or len(planned_books) == 1 and planned_books[0] == '' :
             await message.answer("There is none books in your list. Add them and come back later :)")
             await welcome(message, state)
         else:
