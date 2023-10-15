@@ -1,6 +1,21 @@
-## Bot for tracking info about your readings
+## Book tracking bot for you
 
-Welcome! This is telegram bot written on python by using aiogram for keeping information about your read/planned books.
+:Welcome! This is bot for keeping information about your read/planned books. Bot was made in Python on aiogram with usage of sqlalchemy for databases and poetry for dependencies management.
+
+
+# Usage
+Basically, bot has 3 main functions:      
+  1. Add/Remove book to/from your lists (read list and planned list).
+  2. Rate the book that is already in the list.
+  3. Get full content of your lists.
+
+How to use it:    
+  * To start the bot use /start command.
+  * Choose what you'd like to do and press the right button.
+  * To add/remove book use add/remove buttons.
+  * To get content of lists use read/planned button.
+  * To set rating to the book use rate button then follow instructions of the bot.
+  * If you misclicked you always can come back with back button.
 
 # Installation
 
@@ -23,3 +38,7 @@ poetry install
 ```
 poetry run python bot/main.py
 ```
+
+
+# Notes
+  I'd appreciate any feedback so feel free to contact me if you have any question or just want to help. 
