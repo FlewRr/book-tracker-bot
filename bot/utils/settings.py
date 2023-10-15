@@ -20,6 +20,7 @@ class Buttons(BaseModel):
     remove : str
     read : str
     planned : str
+    rate : str
     back : str
 
 

@@ -4,7 +4,7 @@ from aiogram.dispatcher import FSMContext
 from utils.settings import BotSettings
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from sqlalchemy import create_engine
-from database.db import Base
+from database.database import Base
 from sqlalchemy.orm import Session
 
 settings = BotSettings()
