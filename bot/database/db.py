@@ -13,6 +13,9 @@ class User(Base):
     user_id = Column(Integer, primary_key=True, index=True)
     read_books = Column(String)
     planned_books = Column(String)
+    read_rating = Column(String)
+    planned_rating = Column(String)
+
 
 
 def database_get_by_id(database : Session, user_id : int, read : bool) -> List[String]:
@@ -32,9 +35,9 @@ def database_insert(database : Session, user_id : int, book : str, read : bool) 
 
     if row == None:
         if read: 
-            database.add(User(user_id=user_id, read_books=book, planned_books=''))
+            database.add(User(user_id=user_id, read_books=book, planned_books='', read_rating='', planned_rating=''))
         else:
-            database.add(User(user_id=user_id, read_books='', planned_books=book))
+            database.add(User(user_id=user_id, read_books='', planned_books=book, read_rating='', planned_rating=''))
         database.commit()
         return
     
@@ -51,9 +54,9 @@ def database_update(database : Session, user_id : int, book : str, read : bool) 
 
     if row == None:
         if read: 
-            database.add(User(user_id=user_id, read_books=book, planned_books = ''))
+            database.add(User(user_id=user_id, read_books=book, planned_books = '', read_rating='', planned_rating=''))
         else:
-            database.add(User(user_id=user_id, read_books='', planned_books=book))
+            database.add(User(user_id=user_id, read_books='', planned_books=book, read_rating='', planned_rating=''))
         database.commit()
         return
 
