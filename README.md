@@ -1,4 +1,4 @@
-## Book tracking bot for you
+## Book tracking bot for your books
 
 Welcome! This is bot for keeping information about your read/planned books. Bot was made in Python on aiogram with usage of sqlalchemy for databases and poetry for dependencies management.
 
