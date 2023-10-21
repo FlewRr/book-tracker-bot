@@ -19,7 +19,7 @@ How to use it:
   * Command /recs returns list of recommendations based on user's books.
   * If you misclicked you always can come back with back button.
   * You can use command /help or /about to get understanding of what bot is capable of.
-  * You can use command /recs to get recommendations based on your reading lists.
+
 # Installation
 
 * Clone this repository
