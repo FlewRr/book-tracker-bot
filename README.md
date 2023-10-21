@@ -44,7 +44,7 @@ python3 bot/main.py
 ```
 
 # Recommendation System
-Recsys model is written with usage of [Approximate Nearest Neighbours](https://github.com/spotify/annoy) which is C++ library with Python bindings to search for points in space that are close to a given query point.
+Recsys model is written with usage of [annoy](https://github.com/spotify/annoy) which is C++ library with Python bindings to search for points in space that are close to a given query point.
 Model architecture can be described as:
   * User's interactions and opensource data (since bot is not popular enough to generate sufficient amount of data) are stored in sqlite3 database.
   * After User's request all the data is factorized into mappings of users interactions and its features.
