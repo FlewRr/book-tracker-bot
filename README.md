@@ -16,7 +16,7 @@ How to use it:
   * To get content of lists use read/planned button.
   * To set rating to the book use rate button then follow instructions of the bot.
   * If you misclicked you always can come back with back button.
-  * You can use command /help or /about to get understanding of what bot is capable of
+  * You can use command /help or /about to get understanding of what bot is capable of.
   * You can use command /recs to get recommendations based on your reading lists.
 # Installation
 
