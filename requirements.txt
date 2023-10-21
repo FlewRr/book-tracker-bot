@@ -1,0 +1,7 @@
+aiogram == 2.23.1
+SQLAlchemy ==2.0.22
+pydantic ==2.3.0
+pandas ==2.1.0
+lightfm ==1.17.0
+annoy == 1.17.3
+numpy ==1.25.1
