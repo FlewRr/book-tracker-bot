@@ -16,7 +16,8 @@ How to use it:
   * To get content of lists use read/planned button.
   * To set rating to the book use rate button then follow instructions of the bot.
   * If you misclicked you always can come back with back button.
-
+  * You can use command /help or /about to get understanding of what bot is capable of
+  * You can use command /recs to get recommendations based on your reading lists.
 # Installation
 
 * Clone this repository to your local machine
@@ -25,20 +26,20 @@ git clone https://github.com/FlewRr/book-tracker-bot
 ```
 * Create your bot with [BotFather](https://t.me/botfather) and paste its api token into the bot/resources/config.json
 
-* Install [poetry](https://python-poetry.org/docs/)
+* Install requirements in the root folder
 ```
-curl -sSL https://install.python-poetry.org | python3 -
+pip install -r requirements.txt
 ```
-* Install environment (terminal shall be opened in the folder with poetry.lock file)
+
+* Create db (may take around one minute)
 ```
-poetry install
+python3 bot/create_db.py
 ```
 
 * Run bot
 ```
-poetry run python bot/main.py
+python3 bot/main.py
 ```
 
 
 # Notes
-  I'd appreciate any feedback so feel free to contact me if you have any question or just want to help. 

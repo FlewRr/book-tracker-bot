@@ -1,0 +1,13 @@
+recommender:
+  top_k: 15
+  dim: 32
+  metric: "angular"
+  n_trees: 50
+  n_jobs: -1
+  search_k: -1
+  n_neighbors: 200
+paths: 
+  user_vectors_path: "recs/data/item_vectors.pkl"
+  item_vectors_path: "recs/data/item_vectors.pkl"
+  user_map_path: "recs/data/user_id_mapping.pkl"
+  item_map_path: "recs/data/item_id_mapping.pkl"

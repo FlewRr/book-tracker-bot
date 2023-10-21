@@ -1,7 +1,7 @@
 {
     "welcome" : "👋 Welcome, traveller! To continue choose what you'd like to do and press the right button! If you have any questions use /help or /about",
     "about" : "ℹ️[About]\nI am book tracking bot, with my help you can keep track of the books you have read or plan to read!",
-    "help" : "To start you shall use command /start and navigate through by using telegram keyboard buttons. \n If you'd like to add/remove book from the list you can hit the button add/remove on the keyboard then choose the list you'd like to modify (read books or planned). \nAlso you can get info about your books using read list/planned list button. \nYou can always go back by using button back or typing in /start. \nI hope I helped you! Have a great day!",
+    "help" : "To start you shall use command /start and navigate through by using telegram keyboard buttons. \n If you'd like to add/remove book from the list you can hit the button add/remove on the keyboard then choose the list you'd like to modify (read books or planned). \nAlso you can get info about your books using read list/planned list button.\nTo get personal recommendations based on your books use /recs ccommand.\nYou can always go back by using button back or typing in /start. \nI hope I helped you! Have a great day!",
     "add" : "What exactly do you want to add? Send me the name of the book and I'll add it to the collections.",
     "remove" : "What is the book you'd like to delete? Send me the name of it and I'll serve my purpose!",
     "off" : "See you later! I'll look out for your books, don't worry about it!"

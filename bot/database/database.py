@@ -16,19 +16,27 @@ class User(Base):
     rating = Column(Integer)
 
 
+def get_all(database: Session):
+    rows = database.query(User).all()
+
+    return rows
+
 def get_books_by_id(database : Session, user_id : int, read : int) -> List[String]:
-    row = [(x.book, x.rating) for x  in database.query(User).filter(User.user_id == user_id, User.label == read).all()]
+    rows = database.query(User).filter(User.user_id == user_id, User.label == read).all()
+    if rows == None:
+        return
+    row = [(x.book, x.rating) for x in rows]
 
     return row
 
 
 def add_book(database : Session, user_id : int, book : String, read : int) -> bool:
-    books = get_books_by_id(database, user_id, read)
-
+    books = [x[0] for x in get_books_by_id(database, user_id, read)]
+    rows = database.query(User).count()
     if book in books:
         return False
 
-    database.add(User(user_id=user_id, book=book, label=read, rating=-1)) # -1 == undefined
+    database.add(User(id=rows, user_id=user_id, book=book, label=read, rating=-1)) # -1 == undefined
     database.commit()
     return True
 
@@ -57,28 +65,27 @@ def remove_book(database : Session, user_id : int, book : String, read : bool) -
 
 
 
-
 # if __name__ == "__main__":
 #     engine = create_engine('sqlite:///database.db', echo=True)
-
 #     Base.metadata.create_all(bind=engine)
 
 #     db = Session(autoflush=False, bind=engine)
+    
+#     f = pd.read_sql_table('books', con=engine.connect())
+#     print(f.head())
+    # add_book(db, 1, 'b', 1)
+    # add_book(db, 1, 'c', 1)
 
-#     add_book(db, 1, 'a', 1)
-#     # add_book(db, 1, 'b', 1)
-#     # add_book(db, 1, 'c', 1)
+    # add_book(db, 1, 'a', 2)
+    # add_book(db, 1, 'b', 2)
+    # add_book(db, 1, 'c', 2)
 
-#     # add_book(db, 1, 'a', 2)
-#     # add_book(db, 1, 'b', 2)
-#     # add_book(db, 1, 'c', 2)
+    # add_book(db, 2, 'd', 1)
+    # add_book(db, 2, 'e', 1)
+    # add_book(db, 2, 'f', 1)
 
-#     # add_book(db, 2, 'd', 1)
-#     # add_book(db, 2, 'e', 1)
-#     # add_book(db, 2, 'f', 1)
+    # add_book(db, 2, 'g', 2)
+    # add_book(db, 2, 'h', 2)
+    # add_book(db, 2, 'i', 2)
 
-#     # add_book(db, 2, 'g', 2)
-#     # add_book(db, 2, 'h', 2)
-#     # add_book(db, 2, 'i', 2)
-
-#     # print(get_books_by_id(db, 1, 13))
+    # print(get_books_by_id(db, 1, 13))

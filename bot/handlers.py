@@ -1,9 +1,13 @@
 from aiogram import types
-from loader import dp, settings, db
 from aiogram.dispatcher import FSMContext
+from loader import dp, settings, db, book_storage_db, interactions_engine, create_mappings
 from utils.states import States
 from keyboards import start_keyboard, add_mistake_keyboard, remove_mistake_keyboard, add_remove_keyboard
 from database.database import get_books_by_id, add_book, set_rating, remove_book
+from database.books_db import get_dict_for_books, add_book_in_storage
+from annoy_builder import get_recs_for_user, build_annoy
+
+dict_for_books = get_dict_for_books(book_storage_db)
 
 @dp.message_handler(commands=["start"], state="*")
 async def welcome(message: types.Message, state: FSMContext):
@@ -22,6 +26,23 @@ async def help(message: types.Message, state: FSMContext):
     await message.answer(settings.messages.help)
     await welcome(message, state)
 
+@dp.message_handler(commands=['recs'], state="*")
+async def recs(message: types.Message, state: FSMContext):
+    read_books = get_books_by_id(database=db, user_id=message.from_user.id, read=1)
+    planned_books = get_books_by_id(database=db, user_id=message.from_user.id, read=2)
+
+    if len(read_books) == 0 and len(planned_books) == 0:
+        await message.answer("You have no books in the lists. Add them and try again later.")
+        await welcome(message, state)
+    else:
+        await message.answer("Have in mind that to get recs you need to 'commit' your newly updated books to reccomendation system and build it again. It may take around one minute.")
+        await message.answer('Mappings has started to be generated. Please, wait.')
+        create_mappings(interactions_engine, "books", book_storage_db)
+
+        ann = build_annoy()
+        recs = [dict_for_books[x] for x in get_recs_for_user(ann, message.from_user.id, [])]
+        await message.answer(('\n'.join([str(x) for x in recs])).strip())
+        await welcome(message, state)            
 
 @dp.message_handler(state=States.work)
 async def start(message: types.Message, state):
@@ -93,11 +114,11 @@ async def add_book_to_read(message: types.Message, state: FSMContext):
         return 0
     
     f = add_book(database=db, user_id=message.from_user.id, book=message.text, read=1)
-
     if not f:
         await message.answer("Oops, I guess this book is already in the list. Try again.")
         await welcome(message, state)
     else:
+        add_book_in_storage(database=book_storage_db, book=message.text)
         await message.answer("The book has been added to read books.")
         await welcome(message, state)
 
@@ -115,6 +136,7 @@ async def add_book_to_planned(message: types.Message, state: FSMContext):
         await message.answer("Oops, I guess this book is already in the list. Try again.")
         await welcome(message, state)
     else:
+        add_book_in_storage(database=book_storage_db, book=message.text)
         await message.answer("The book has been added to read books.")
         await welcome(message, state)
 
@@ -179,11 +201,20 @@ async def rate_aux(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=States.rate)
 async def rate(message: types.Message, state: FSMContext):
-    f = set_rating(db, message.from_user.id, book, message.text, read)
+    try:
+        rating = int(message.text)
+        if rating >= 1 and rating <=10:
+            f = set_rating(db, message.from_user.id, book, message.text, read)
 
-    if f:
-        await message.answer("The rating was set successfully")
-    else:
-        await message.answer("Something gone wrong. Try again.")
+            if f:
+                await message.answer("The rating was set successfully")
+            else:
+                await message.answer("Something gone wrong. Try again.")
 
-    await welcome(message, state)
+            await welcome(message, state)
+        else:
+            await message.answer("Rating must be number from 1 to 10!")
+            await welcome(message, state)
+    except:
+        await message.answer("Rating must be number from 1 to 10!")
+        await welcome(message, state)

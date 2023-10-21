@@ -27,9 +27,9 @@ class Buttons(BaseModel):
 class BotSettings:
 
     _map = dict()
-    _messages_path = "bot/resourses/messages.json"
-    _config_path = "bot/resourses/config.json"
-    _buttons_path = "bot/resourses/buttons.json"
+    _messages_path = "resourses//messages.json"
+    _config_path = "resourses/config.json"
+    _buttons_path = "resourses/buttons.json"
     
     def __init__(self):
         self.load()
