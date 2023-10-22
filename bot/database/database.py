@@ -30,9 +30,10 @@ def get_books_by_id(database : Session, user_id : int, read : int) -> List[Strin
     return row
 
 
-def add_book(database : Session, user_id : int, book : String, read : int) -> bool:
+def add_book(database : Session, user_id : int, book : str, read : int) -> bool:
     books = [x[0] for x in get_books_by_id(database, user_id, read)]
     rows = database.query(User).count()
+
     if book in books:
         return False
 
@@ -41,7 +42,7 @@ def add_book(database : Session, user_id : int, book : String, read : int) -> bo
     return True
 
 
-def set_rating(database : Session, user_id : int, book : String, rating : int, read : int) -> bool:
+def set_rating(database: Session, user_id: int, book: str, rating: int, read: int=1) -> bool:
     row = database.query(User).filter(User.user_id==user_id, User.book==book, User.label==read).all()
 
     if len(row) != 1:
@@ -52,9 +53,9 @@ def set_rating(database : Session, user_id : int, book : String, rating : int, r
 
     return True
 
-def remove_book(database : Session, user_id : int, book : String, read : bool) -> bool:
-    books = get_books_by_id(database, user_id, read)
-
+def remove_book(database : Session, user_id : int, book : str, read : bool) -> bool:
+    books = [x[0] for x in get_books_by_id(database, user_id, read)]
+    
     if book not in books:
         return False
     

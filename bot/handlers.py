@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from loader import dp, settings, db, book_storage_db, interactions_engine, create_mappings
 from utils.states import States
-from keyboards import start_keyboard, add_mistake_keyboard, remove_mistake_keyboard, add_remove_keyboard
+from keyboards import start_keyboard, add_remove_keyboard, yes_no_keyboard
 from database.database import get_books_by_id, add_book, set_rating, remove_book
 from database.books_db import get_dict_for_books, add_book_in_storage
 from annoy_builder import get_recs_for_user, build_annoy
@@ -35,12 +35,11 @@ async def recs(message: types.Message, state: FSMContext):
         await message.answer("You have no books in the lists. Add them and try again later.")
         await welcome(message, state)
     else:
-        await message.answer("Have in mind that to get recs you need to 'commit' your newly updated books to reccomendation system and build it again. It may take around one minute.")
-        await message.answer('Mappings has started to be generated. Please, wait.')
+        await message.answer('Recommendations has started to be generated. Please, wait. :)')
         create_mappings(interactions_engine, "books", book_storage_db)
 
         ann = build_annoy()
-        recs = [dict_for_books[x] for x in get_recs_for_user(ann, message.from_user.id, [])]
+        recs = set([dict_for_books[x] for x in get_recs_for_user(ann, message.from_user.id, [])]) - set(read_books) - set(planned_books)
         await message.answer(('\n'.join([str(x) for x in recs])).strip())
         await welcome(message, state)            
 
@@ -70,7 +69,7 @@ async def start(message: types.Message, state):
             await welcome(message, state) 
     elif message.text == settings.buttons.rate:
         await States.rate_aux.set()
-        await message.answer("Where do you want to rate this book? In read list or planned list?", reply_markup=add_remove_keyboard)
+        await message.answer("Send me the name of the book you'd like to rate? o_o \nP.S. Keep in mind that this book has to be in read list. \n(planned books can not be rated) -_-")
     elif message.text == settings.buttons.back:
         await message.answer(settings.messages.off)
         return 0
@@ -119,8 +118,11 @@ async def add_book_to_read(message: types.Message, state: FSMContext):
         await welcome(message, state)
     else:
         add_book_in_storage(database=book_storage_db, book=message.text)
+        global book 
+        book = message.text
         await message.answer("The book has been added to read books.")
-        await welcome(message, state)
+        await States.add_aux.set()
+        await message.answer("Would you like to rate this book right now?", reply_markup=yes_no_keyboard)
 
 
 @dp.message_handler(state=States.add_planned)
@@ -137,7 +139,19 @@ async def add_book_to_planned(message: types.Message, state: FSMContext):
         await welcome(message, state)
     else:
         add_book_in_storage(database=book_storage_db, book=message.text)
-        await message.answer("The book has been added to read books.")
+        await message.answer("The book has been added to planned books.")
+        await States.add_aux.set()
+        await message.answer("Would you like to rate this book right now?", reply_markup=yes_no_keyboard)
+
+@dp.message_handler(state=States.add_aux)
+async def rate_or_not_to_rate(message: types.Message, state: FSMContext):
+    if message.text == 'Yes':
+        await States.rate.set()
+        await message.answer("Give me the number from 0 to 5, that'll be the rating of the book.")
+    elif message.text == 'No':
+        await welcome(message, state)
+    else:
+        await message.answer("I don't understand you try again later.")
         await welcome(message, state)
 
 
@@ -174,37 +188,20 @@ async def remove_book_from_planned(message: types.Message, state: FSMContext):
         await welcome(message, state)
 
 @dp.message_handler(state=States.rate_aux)
-async def rate_aux(message: types.Message, state: FSMContext): 
-    global read  
-    if message.text == 'read':
-        read = 1
-        await States.rate_aux_sec.set()
-        await message.answer("Send me the name of the book you'd like to rate? o_o")
-    elif message.text == 'planned':
-        read = 2
-        await States.rate_aux_sec.set()
-        await message.answer("Send me the name of the book you'd like to rate? o_o")
-    elif message.text == settings.buttons.back:
-        await welcome(message, state)
-    else:
-        await message.answer("I don't understand. Try again.")
-        await welcome(message, state)
-
-@dp.message_handler(state=States.rate_aux_sec)
 async def rate_aux(message: types.Message, state: FSMContext):
     global book
     book = message.text
     
     await States.rate.set()
-    await message.answer("Give me the number from 1 to 10, that'll be the rating of the book.")
+    await message.answer("Give me the number from 0 to 5, that'll be the rating of the book.")
 
 
 @dp.message_handler(state=States.rate)
 async def rate(message: types.Message, state: FSMContext):
     try:
         rating = int(message.text)
-        if rating >= 1 and rating <=10:
-            f = set_rating(db, message.from_user.id, book, message.text, read)
+        if rating >= 0 and rating <=5:
+            f = set_rating(db, message.from_user.id, book, message.text)
 
             if f:
                 await message.answer("The rating was set successfully")
@@ -213,7 +210,7 @@ async def rate(message: types.Message, state: FSMContext):
 
             await welcome(message, state)
         else:
-            await message.answer("Rating must be number from 1 to 10!")
+            await message.answer("Rating must be number from 0 to 5!")
             await welcome(message, state)
     except:
         await message.answer("Rating must be number from 1 to 10!")
