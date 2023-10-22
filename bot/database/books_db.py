@@ -17,8 +17,12 @@ class Book(Based):
     book = Column(String)
 
 def add_book_in_storage(database: Session, book: str) -> None:
-    rows = database.query(Book).count()
+    books = [x.book for x in database.query(Book).all()]
+
+    if book in books:
+        return
     
+    rows = database.query(Book).count()
     database.add(Book(book=book, id=rows))
     database.commit()
 

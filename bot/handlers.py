@@ -35,8 +35,7 @@ async def recs(message: types.Message, state: FSMContext):
         await message.answer("You have no books in the lists. Add them and try again later.")
         await welcome(message, state)
     else:
-        await message.answer("Have in mind that to get recs you need to 'commit' your newly updated books to reccomendation system and build it again. It may take around one minute.")
-        await message.answer('Mappings has started to be generated. Please, wait.')
+        await message.answer('Recommendations has started to be generated. Please, wait. :)')
         create_mappings(interactions_engine, "books", book_storage_db)
 
         ann = build_annoy()
@@ -196,14 +195,14 @@ async def rate_aux(message: types.Message, state: FSMContext):
     book = message.text
     
     await States.rate.set()
-    await message.answer("Give me the number from 1 to 10, that'll be the rating of the book.")
+    await message.answer("Give me the number from 0 to 5, that'll be the rating of the book.")
 
 
 @dp.message_handler(state=States.rate)
 async def rate(message: types.Message, state: FSMContext):
     try:
         rating = int(message.text)
-        if rating >= 1 and rating <=10:
+        if rating >= 0 and rating <=5:
             f = set_rating(db, message.from_user.id, book, message.text, read)
 
             if f:
@@ -213,7 +212,7 @@ async def rate(message: types.Message, state: FSMContext):
 
             await welcome(message, state)
         else:
-            await message.answer("Rating must be number from 1 to 10!")
+            await message.answer("Rating must be number from 0 to 5!")
             await welcome(message, state)
     except:
         await message.answer("Rating must be number from 1 to 10!")
