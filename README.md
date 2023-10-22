@@ -33,7 +33,7 @@ git clone https://github.com/FlewRr/book-tracker-bot
 pip install -r requirements.txt
 ```
 
-* Create db (may take around one minute)
+* Create db
 ```
 python3 bot/create_db.py
 ```
