@@ -45,8 +45,6 @@ def create_mappings(engine: Engine, database_name: str, book_storage_db: Session
     item_id_mapping = {k: v for k, v in lfm_dataset._item_id_mapping.items()}
     user_id_mapping = lfm_dataset._user_id_mapping
 
-    print(len(user_vectors))
-
     with open(PATH + 'user_vectors.pkl', 'wb') as outp:
         pickle.dump(user_vectors, outp, pickle.HIGHEST_PROTOCOL)
     with open(PATH + 'item_vectors.pkl', 'wb') as outp:

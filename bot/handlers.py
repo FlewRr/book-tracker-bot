@@ -69,7 +69,7 @@ async def start(message: types.Message, state):
             await welcome(message, state) 
     elif message.text == settings.buttons.rate:
         await States.rate_aux.set()
-        await message.answer("Where do you want to rate this book? In read list or planned list?", reply_markup=add_remove_keyboard)
+        await message.answer("Send me the name of the book you'd like to rate? o_o")
     elif message.text == settings.buttons.back:
         await message.answer(settings.messages.off)
         return 0
@@ -173,23 +173,6 @@ async def remove_book_from_planned(message: types.Message, state: FSMContext):
         await welcome(message, state)
 
 @dp.message_handler(state=States.rate_aux)
-async def rate_aux(message: types.Message, state: FSMContext): 
-    global read  
-    if message.text == 'read':
-        read = 1
-        await States.rate_aux_sec.set()
-        await message.answer("Send me the name of the book you'd like to rate? o_o")
-    elif message.text == 'planned':
-        read = 2
-        await States.rate_aux_sec.set()
-        await message.answer("Send me the name of the book you'd like to rate? o_o")
-    elif message.text == settings.buttons.back:
-        await welcome(message, state)
-    else:
-        await message.answer("I don't understand. Try again.")
-        await welcome(message, state)
-
-@dp.message_handler(state=States.rate_aux_sec)
 async def rate_aux(message: types.Message, state: FSMContext):
     global book
     book = message.text
@@ -203,7 +186,7 @@ async def rate(message: types.Message, state: FSMContext):
     try:
         rating = int(message.text)
         if rating >= 0 and rating <=5:
-            f = set_rating(db, message.from_user.id, book, message.text, read)
+            f = set_rating(db, message.from_user.id, book, message.text)
 
             if f:
                 await message.answer("The rating was set successfully")
