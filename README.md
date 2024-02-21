@@ -47,6 +47,6 @@ python3 bot/main.py
 Recsys model is written with usage of [annoy](https://github.com/spotify/annoy) which is C++ library with Python bindings to search for points in space that are close to a given query point.
 Model architecture can be described as:
   * User's interactions and opensource data (since bot is not popular enough to generate sufficient amount of data) are stored in sqlite3 database.
-  * After User's request all the data is factorized into vectors of users interactions and its features with usage of lightfm.
+  * After User's request all the data is factorized into vectors of users' interactions and its features with usage of lightfm.
   * After that AnnoyRecommender is fit with mappings.
   * AnnoyRecommender generates recommendations for user and sends it to them.
